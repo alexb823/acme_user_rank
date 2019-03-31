@@ -5,24 +5,24 @@ const db = new Sequelize(process.env.DATABASE_URL, { logging: false });
 const User = db.define('user', {
   name: {
     type: Sequelize.STRING,
-    unique: true,
+    unique: { msg: 'User name must be unique' },
     allowNull: false,
-    validation: {
-      notEmpty: true,
+    validate: {
+      notEmpty: { msg: "Name field can't be empty" },
     },
   },
   bio: {
     type: Sequelize.TEXT,
     allowNull: false,
-    validation: {
-      notEmpty: true,
+    validate: {
+      notEmpty: {msg: "Bio field can't be empty"},
     },
   },
   rank: {
     type: Sequelize.INTEGER,
     allowNull: false,
-    validation: {
-      notEmpty: true,
+    validate: {
+      notEmpty: {msg: "Rank field can't be empty"},
     },
   },
 });

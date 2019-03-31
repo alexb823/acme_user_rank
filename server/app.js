@@ -17,10 +17,16 @@ app.get('/api/users', (req, res, next) => {
     .catch(next);
 });
 
+app.post('/api/users/create', (req, res, next) => {
+  User.create(req.body)
+  .then(() => res.sendStatus(201))
+  .catch(next)
+})
+
 //handle 404
 app.use((req, res, next) => {
   const err = new Error('Not Found!');
-  err.status(404);
+  err.status = 404;
   next(err);
 });
 
