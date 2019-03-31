@@ -19,9 +19,15 @@ app.get('/api/users', (req, res, next) => {
 
 app.post('/api/users/create', (req, res, next) => {
   User.create(req.body)
-  .then(() => res.sendStatus(201))
-  .catch(next)
-})
+    .then(() => res.sendStatus(201))
+    .catch(next);
+});
+
+app.delete('/api/users/:id', (req, res, next) => {
+  User.destroy({ where: { id: req.params.id } })
+    .then(() => res.sendStatus(204))
+    .catch(next);
+});
 
 //handle 404
 app.use((req, res, next) => {
