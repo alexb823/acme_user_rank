@@ -8,9 +8,12 @@ class Users extends Component {
     this.props.fetchUsers();
   }
   render() {
+    let {location, users, topRanked} = this.props;
+    if(location.pathname === '/users/topRanked') users = topRanked;
+    console.log(this.props)
     return (
       <ul className="list-group">
-        {this.props.users.map(user => (
+        {users.map(user => (
           <li key={user.id} className="list-group-item">
             <User user={user} />
           </li>
@@ -23,6 +26,7 @@ class Users extends Component {
 const mapStateToProps = state => {
   return {
     users: state.users,
+    topRanked: state.topRanked,
   };
 };
 

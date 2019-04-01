@@ -4,6 +4,7 @@ import axios from 'axios';
 
 const initialState = {
   users: [],
+  topRanked: [],
 };
 
 //action type
@@ -46,11 +47,25 @@ export const deleteUser = id => {
   };
 };
 
+// helper function to get top ranked user or users from users array
+const getTopUser = users => {
+  return users.reduce((acc, user) => {
+    if(!acc[0] && user) return [user]
+    if (user.rank < acc[0].rank) return [user];
+    if (user.rank === acc[0].rank) return acc.push(user);
+    return acc;
+  }, []);
+};
+
 //reducer
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case GOT_USERS_FROM_SERVER:
-      return { ...state, users: action.users };
+      return {
+        ...state,
+        users: action.users,
+        topRanked: getTopUser(state.users),
+      };
     case DELETED_USER_FROM_SERVER:
       return {
         ...state,
@@ -60,7 +75,6 @@ const reducer = (state = initialState, action) => {
       return state;
   }
 };
-
 
 const store = createStore(reducer, applyMiddleware(thunkMiddleWare));
 

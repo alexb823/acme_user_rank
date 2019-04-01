@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 export default class UserForm extends Component {
@@ -24,7 +25,7 @@ export default class UserForm extends Component {
   handleOnSubmit = event => {
     event.preventDefault();
     const { user } = this.state;
-    const {history} = this.props;
+    const { history } = this.props;
     axios
       .post('api/users/create', user)
       .then(() => history.push('/users'))
@@ -83,9 +84,9 @@ export default class UserForm extends Component {
           <button className="btn btn-primary" type="submit">
             Create
           </button>
-          <button className="btn btn-secondary" type="reset">
+          <Link to="/users" className="btn btn-secondary">
             Cancel
-          </button>
+          </Link>
         </div>
       </form>
     );

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 const navTabs = [
   { name: 'Home', path: '/' },
@@ -8,7 +9,7 @@ const navTabs = [
   { name: 'Top Ranked', path: '/users/topRanked' },
 ];
 
-const Nav = ({ location }) => {
+const Nav = ({ location, users }) => {
   return (
     <ul className="nav nav-tabs mb-4">
       {navTabs.map(navTab => (
@@ -19,7 +20,9 @@ const Nav = ({ location }) => {
               navTab.path === location.pathname ? 'active' : ''
             }`}
           >
-            {navTab.name}
+            {navTab.name === 'Users'
+              ? `${navTab.name} (${users.length})`
+              : navTab.name}
           </Link>
         </li>
       ))}
@@ -27,4 +30,10 @@ const Nav = ({ location }) => {
   );
 };
 
-export default Nav;
+const mapStateToProps = state => {
+  return {
+    users: state.users,
+  };
+};
+
+export default connect(mapStateToProps)(Nav);

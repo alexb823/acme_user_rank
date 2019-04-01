@@ -19,7 +19,7 @@ const User = ({ user, deleteUser }) => {
           type="button"
           onClick={() => deleteUser(user.id)}
         >
-          Delet
+          Delete
         </button>
         <Link to="/users/create">Edit</Link>
       </div>
