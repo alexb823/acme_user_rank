@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import {fetchUsers} from './store';
 
 const navTabs = [
   { name: 'Home', path: '/' },
@@ -9,8 +10,17 @@ const navTabs = [
   { name: 'Top Ranked', path: '/users/topRanked' },
 ];
 
-const Nav = ({ location, users }) => {
-  return (
+
+class Nav extends Component {
+  
+  componentDidMount() {
+    this.props.fetchUsers();
+  }
+  
+  render(){
+    const { location, numUsers } = this.props;
+    
+    return (
     <ul className="nav nav-tabs mb-4">
       {navTabs.map(navTab => (
         <li key={navTab.name} className="nav-item">
@@ -21,19 +31,21 @@ const Nav = ({ location, users }) => {
             }`}
           >
             {navTab.name === 'Users'
-              ? `${navTab.name} (${users.length})`
+              ? `${navTab.name} (${numUsers})`
               : navTab.name}
           </Link>
         </li>
       ))}
     </ul>
   );
+  }
+  
 };
 
-const mapStateToProps = state => {
+const mapDispatchToProps = dispatch => {
   return {
-    users: state.users,
+    fetchUsers: () => dispatch(fetchUsers()),
   };
 };
 
-export default connect(mapStateToProps)(Nav);
+export default connect(null, mapDispatchToProps)(Nav);

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import {connect} from 'react-redux';
 import axios from 'axios';
+import {fetchUsers} from './store';
 
-export default class UserForm extends Component {
+class UserForm extends Component {
   constructor() {
     super();
     this.state = {
@@ -25,9 +27,10 @@ export default class UserForm extends Component {
   handleOnSubmit = event => {
     event.preventDefault();
     const { user } = this.state;
-    const { history } = this.props;
+    const { history, fetchUsers } = this.props;
     axios
       .post('api/users/create', user)
+      .then(() => fetchUsers())
       .then(() => history.push('/users'))
       .catch(ex => this.setState({ error: ex.response.data }));
   };
@@ -92,3 +95,13 @@ export default class UserForm extends Component {
     );
   }
 }
+
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchUsers: () => dispatch(fetchUsers())
+  }
+}
+
+
+export default connect(null, mapDispatchToProps)(UserForm);

@@ -1,29 +1,9 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { fetchUsers } from './store';
+import React from 'react';
 
-class Home extends Component {
-  componentDidMount() {
-    this.props.fetchUsers();
-  }
-  render() {
-    return <div>We have {this.props.users.length} Users!</div>;
-  }
+const Home = ({ numUsers }) => {
+
+  return (<div>We have {numUsers} Users!</div>);
 }
 
-const mapStateToProps = state => {
-  return {
-    users: state.users,
-  };
-};
 
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchUsers: () => dispatch(fetchUsers()),
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Home);
+export default Home;

@@ -12,10 +12,11 @@ const GOT_USERS_FROM_SERVER = 'GOT_USERS_FROM_SERVER';
 const DELETED_USER_FROM_SERVER = 'DELETED_USER_FROM_SERVER';
 
 //action creator
-const gotUsersFromServer = users => {
+const gotUsersFromServer = (users, topRanked) => {
   return {
     type: GOT_USERS_FROM_SERVER,
     users,
+    topRanked,
   };
 };
 
@@ -26,12 +27,24 @@ const deletedUserFromServer = id => {
   };
 };
 
+// helper function for fetchUsers thunk
+// to filter top ranked user or users from all the users
+const getTopUser = users => {
+  return users.reduce((acc, user) => {
+    if(!acc.length && users.length) acc = [user];
+    else if (user.rank < acc[0].rank) acc = [user];
+    else if (user.rank === acc[0].rank) acc.push(user);
+    return acc;
+  }, []);
+};
+
 //thunks
 export const fetchUsers = () => {
   return dispatch => {
     return axios
       .get('/api/users')
-      .then(response => gotUsersFromServer(response.data))
+      .then(response => response.data)
+      .then(users => gotUsersFromServer(users, getTopUser(users)))
       .then(action => dispatch(action))
       .catch(err => console.error(err));
   };
@@ -47,16 +60,6 @@ export const deleteUser = id => {
   };
 };
 
-// helper function to get top ranked user or users from users array
-const getTopUser = users => {
-  return users.reduce((acc, user) => {
-    console.log(acc)
-    if(!acc.length && users.length) acc = [user];
-    else if (user.rank < acc[0].rank) acc = [user];
-    else if (user.rank === acc[0].rank) acc.push(user);
-    return acc;
-  }, []);
-};
 
 //reducer
 const reducer = (state = initialState, action) => {
@@ -65,12 +68,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         users: action.users,
-        topRanked: getTopUser(state.users),
+        topRanked: action.topRanked
       };
     case DELETED_USER_FROM_SERVER:
       return {
         ...state,
         users: state.users.filter(user => user.id !== action.id),
+        topRanked: state.topRanked.filter((user => user.id !== action.id))
       };
     default:
       return state;
