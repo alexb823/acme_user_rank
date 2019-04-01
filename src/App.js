@@ -29,7 +29,7 @@ export default class App extends Component {
           />
 
           <Route
-            path="/users/topRanked"
+            exact path="/users/topRanked"
             render={({ location }) => <Users location={location} />}
           />
         </HashRouter>

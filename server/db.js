@@ -27,6 +27,11 @@ const User = db.define('user', {
   },
 });
 
+
+
+
+
+
 const syncAndSeed = () => {
   return db
     .sync({ force: true })

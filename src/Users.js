@@ -7,10 +7,11 @@ class Users extends Component {
   componentDidMount() {
     this.props.fetchUsers();
   }
+
   render() {
     let {location, users, topRanked} = this.props;
     if(location.pathname === '/users/topRanked') users = topRanked;
-    console.log(this.props)
+
     return (
       <ul className="list-group">
         {users.map(user => (

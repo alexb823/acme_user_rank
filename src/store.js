@@ -50,9 +50,10 @@ export const deleteUser = id => {
 // helper function to get top ranked user or users from users array
 const getTopUser = users => {
   return users.reduce((acc, user) => {
-    if(!acc[0] && user) return [user]
-    if (user.rank < acc[0].rank) return [user];
-    if (user.rank === acc[0].rank) return acc.push(user);
+    console.log(acc)
+    if(!acc.length && users.length) acc = [user];
+    else if (user.rank < acc[0].rank) acc = [user];
+    else if (user.rank === acc[0].rank) acc.push(user);
     return acc;
   }, []);
 };
