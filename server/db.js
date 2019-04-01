@@ -1,14 +1,13 @@
 const Sequelize = require('sequelize');
 
-// DATABASE_URL=postgres://localhost/acme_users_rank_db
-// const db = new Sequelize(process.env.DATABASE_URL, { logging: false });
+const db = new Sequelize(process.env.DATABASE_URL, { logging: false });
 
-// For cloud9 db
-const db = new Sequelize('acme_users_rank_db', 'ubuntu', 'password', {
-  host: 'localhost',
-  dialect: 'postgres',
-  logging: false,
-});
+// // For cloud9 db
+// const db = new Sequelize('acme_users_rank_db', 'ubuntu', 'password', {
+//   host: 'localhost',
+//   dialect: 'postgres',
+//   logging: false,
+// });
 
 const User = db.define('user', {
   name: {

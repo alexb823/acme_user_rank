@@ -28,7 +28,7 @@ const deletedUserFromServer = id => {
 };
 
 // helper function for fetchUsers thunk
-// to filter top ranked user or users from all the users
+// filters top ranked user or users from all the users
 const getTopUser = users => {
   return users.reduce((acc, user) => {
     if(!acc.length && users.length) acc = [user];

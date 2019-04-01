@@ -1,25 +1,16 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import {fetchUsers} from './store';
-
-const navTabs = [
-  { name: 'Home', path: '/' },
-  { name: 'Users', path: '/users' },
-  { name: 'Create A User', path: '/users/create' },
-  { name: 'Top Ranked', path: '/users/topRanked' },
-];
 
 
-class Nav extends Component {
-  
-  componentDidMount() {
-    this.props.fetchUsers();
-  }
-  
-  render(){
-    const { location, numUsers } = this.props;
-    
+const Nav = ({location, numUsers, topNames}) => {
+
+  const navTabs = [
+    { name: 'Home', path: '/'},
+    { name: 'Users', path: '/users', info: numUsers },
+    { name: 'Create A User', path: '/users/create'},
+    { name: 'Top Ranked', path: '/users/topRanked', info: topNames },
+  ];
+
     return (
     <ul className="nav nav-tabs mb-4">
       {navTabs.map(navTab => (
@@ -30,22 +21,12 @@ class Nav extends Component {
               navTab.path === location.pathname ? 'active' : ''
             }`}
           >
-            {navTab.name === 'Users'
-              ? `${navTab.name} (${numUsers})`
-              : navTab.name}
+            {navTab.name} {navTab.info && `(${navTab.info})`}
           </Link>
         </li>
       ))}
     </ul>
   );
-  }
-  
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchUsers: () => dispatch(fetchUsers()),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(Nav);
+export default Nav;
