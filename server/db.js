@@ -44,7 +44,7 @@ const syncAndSeed = () => {
         }),
         User.create({
           name: 'Alex',
-          bio: "He's human, and he likes cats.",
+          bio: "He likes cats.",
           rank: 1,
         }),
       ]);
