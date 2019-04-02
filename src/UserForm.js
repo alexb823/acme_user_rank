@@ -1,33 +1,44 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import axios from 'axios';
-import {fetchUsers} from './store';
+import { fetchUsers } from './store';
+
+const initialState = {
+  user: {
+    name: '',
+    bio: '',
+    rank: '',
+  },
+  error: '',
+};
 
 class UserForm extends Component {
-  constructor() {
-    super();
-    this.state = {
-      user: {
-        name: '',
-        bio: '',
-        rank: '',
-      },
-      error: '',
-    };
+  constructor(props) {
+    super(props);
+    console.log(this.props);
+
+    if (this.props.user) {
+      this.state = {
+        user: this.props.user,
+        error: '',
+      };
+    } else {
+      this.state = initialState;
+    }
   }
 
   handleOnChange = ({ target }) => {
     const { user } = this.state;
     user[target.name] = target.value;
     this.setState({ user });
-    console.log(this.state);
   };
 
   handleOnSubmit = event => {
     event.preventDefault();
     const { user } = this.state;
     const { history, fetchUsers } = this.props;
+
     axios
       .post('api/users/create', user)
       .then(() => fetchUsers())
@@ -39,6 +50,7 @@ class UserForm extends Component {
     const { name, bio, rank } = this.state.user;
     const { error } = this.state;
     const { handleOnChange, handleOnSubmit } = this;
+    const editing = !!this.props.user;
 
     return (
       <form onSubmit={handleOnSubmit}>
@@ -85,7 +97,7 @@ class UserForm extends Component {
 
         <div className="btn-group" role="group">
           <button className="btn btn-primary" type="submit">
-            Create
+            {editing ? 'Edit' : 'Create'}
           </button>
           <Link to="/users" className="btn btn-secondary">
             Cancel
@@ -96,12 +108,13 @@ class UserForm extends Component {
   }
 }
 
-
 const mapDispatchToProps = dispatch => {
   return {
-    fetchUsers: () => dispatch(fetchUsers())
-  }
-}
+    fetchUsers: () => dispatch(fetchUsers()),
+  };
+};
 
-
-export default connect(null, mapDispatchToProps)(UserForm);
+export default connect(
+  null,
+  mapDispatchToProps
+)(UserForm);

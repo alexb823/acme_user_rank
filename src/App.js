@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { HashRouter, Route } from 'react-router-dom';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Nav from './Nav';
 import Users from './Users';
@@ -21,25 +21,35 @@ class App extends Component {
         <HashRouter>
           <Route
             render={({ location }) => (
-              <Nav location={location} numUsers={numUsers} topNames={topNames} />
+              <Nav
+                location={location}
+                numUsers={numUsers}
+                topNames={topNames}
+              />
             )}
           />
-
           <Route exact path="/" render={() => <Home numUsers={numUsers} />} />
-
           <Route exact path="/users" render={() => <Users users={users} />} />
 
-          <Route
-            exact
-            path="/users/topRanked"
-            render={() => <Users users={topRanked} />}
-          />
-
-          <Route
-            exact
-            path="/users/create"
-            render={({ history }) => <UserForm history={history} />}
-          />
+          <Switch>
+            <Route
+              path="/users/topRanked"
+              render={() => <Users users={topRanked} />}
+            />
+            <Route
+              path="/users/create"
+              render={({ history }) => <UserForm history={history} />}
+            />
+            <Route
+              path="/users/:id"
+              render={({ match }) => (
+                <UserForm
+                  id={match.params.id}
+                  user={users.find(user => user.id === match.params.id*1)}
+                />
+              )}
+            />
+          </Switch>
         </HashRouter>
       </div>
     );

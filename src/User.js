@@ -21,7 +21,7 @@ const User = ({ user, deleteUser }) => {
         >
           Delete
         </button>
-        <Link to="/users/create">Edit</Link>
+        <Link to={`/users/${user.id}`}>Edit</Link>
       </div>
     </Fragment>
   );
