@@ -19,6 +19,13 @@ app.get('/api/users', (req, res, next) => {
     .catch(next);
 });
 
+app.put('/api/users/:id', (req, res, next) => {
+  User.findByPk(req.params.id)
+    .then(product => product.update(req.body))
+    .then(() => res.sendStatus(201))
+    .catch(next);
+});
+
 app.post('/api/users/create', (req, res, next) => {
   User.create(req.body)
     .then(() => res.sendStatus(201))

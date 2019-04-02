@@ -42,10 +42,11 @@ class App extends Component {
             />
             <Route
               path="/users/:id"
-              render={({ match }) => (
+              render={({ match, history }) => (
                 <UserForm
                   id={match.params.id}
                   user={users.find(user => user.id === match.params.id*1)}
+                  history={history}
                 />
               )}
             />
@@ -61,7 +62,7 @@ const mapStateToProps = state => {
     users: state.users,
     topRanked: state.topRanked,
     numUsers: state.users.length,
-    topNames: state.topRanked.map(user => user.name).join(' '),
+    topNames: state.topRanked.map(user => user.name).join(', '),
   };
 };
 

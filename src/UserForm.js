@@ -4,15 +4,6 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { fetchUsers } from './store';
 
-const initialState = {
-  user: {
-    name: '',
-    bio: '',
-    rank: '',
-  },
-  error: '',
-};
-
 class UserForm extends Component {
   constructor(props) {
     super(props);
@@ -24,9 +15,20 @@ class UserForm extends Component {
         error: '',
       };
     } else {
-      this.state = initialState;
+      this.state = {
+        user: {
+          name: '',
+          bio: '',
+          rank: '',
+        },
+        error: '',
+      };
     }
   }
+
+  // componentDidUpdate(prevProps) {
+  //   console.log(prevProps)
+  // }
 
   handleOnChange = ({ target }) => {
     const { user } = this.state;
@@ -37,10 +39,9 @@ class UserForm extends Component {
   handleOnSubmit = event => {
     event.preventDefault();
     const { user } = this.state;
-    const { history, fetchUsers } = this.props;
+    const { history, fetchUsers, id } = this.props;
 
-    axios
-      .post('api/users/create', user)
+    axios[id ? 'put' : 'post'](`api/users/${id ? id : 'create'}`, user)
       .then(() => fetchUsers())
       .then(() => history.push('/users'))
       .catch(ex => this.setState({ error: ex.response.data }));
