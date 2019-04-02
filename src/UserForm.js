@@ -7,8 +7,6 @@ import { fetchUsers } from './store';
 class UserForm extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
-
     if (this.props.user) {
       this.state = {
         user: this.props.user,
