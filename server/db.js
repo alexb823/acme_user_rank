@@ -2,13 +2,6 @@ const Sequelize = require('sequelize');
 
 const db = new Sequelize(process.env.DATABASE_URL, { logging: false });
 
-// // For cloud9 db
-// const db = new Sequelize('acme_users_rank_db', 'ubuntu', 'password', {
-//   host: 'localhost',
-//   dialect: 'postgres',
-//   logging: false,
-// });
-
 const User = db.define('user', {
   name: {
     type: Sequelize.STRING,
@@ -33,11 +26,6 @@ const User = db.define('user', {
     },
   },
 });
-
-
-
-
-
 
 const syncAndSeed = () => {
   return db

@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { deleteUser } from './store';
+import { deleteUser, fetchUsers } from './store';
 
-const User = ({ user, deleteUser }) => {
+const User = ({ user, deleteUser, fetchUsers }) => {
   return (
     <Fragment>
       <h5>{user.name}</h5>
@@ -17,7 +17,7 @@ const User = ({ user, deleteUser }) => {
         <button
           className="btn btn-warning"
           type="button"
-          onClick={() => deleteUser(user.id)}
+          onClick={() => deleteUser(user.id).then(()=> fetchUsers())}
         >
           Delete
         </button>
@@ -30,6 +30,7 @@ const User = ({ user, deleteUser }) => {
 const mapDispatchToProps = dispatch => {
   return {
     deleteUser: id => dispatch(deleteUser(id)),
+    fetchUsers: () => dispatch(fetchUsers())
   };
 };
 

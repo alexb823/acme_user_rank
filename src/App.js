@@ -11,7 +11,7 @@ class App extends Component {
   componentDidMount() {
     this.props.fetchUsers();
   }
-
+  
   render() {
     const { users, topRanked, numUsers, topNames } = this.props;
 
@@ -28,7 +28,9 @@ class App extends Component {
               />
             )}
           />
+          
           <Route exact path="/" render={() => <Home numUsers={numUsers} />} />
+          
           <Route exact path="/users" render={() => <Users users={users} />} />
 
           <Switch>
@@ -36,10 +38,12 @@ class App extends Component {
               path="/users/topRanked"
               render={() => <Users users={topRanked} />}
             />
+            
             <Route
               path="/users/create"
               render={({ history }) => <UserForm history={history} />}
             />
+            
             <Route
               path="/users/:id"
               render={({ match, history }) => (

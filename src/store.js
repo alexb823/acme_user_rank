@@ -20,10 +20,9 @@ const gotUsersFromServer = (users, topRanked) => {
   };
 };
 
-const deletedUserFromServer = id => {
+const deletedUserFromServer = () => {
   return {
     type: DELETED_USER_FROM_SERVER,
-    id,
   };
 };
 
@@ -54,12 +53,11 @@ export const deleteUser = id => {
   return dispatch => {
     return axios
       .delete(`/api/users/${id}`)
-      .then(() => deletedUserFromServer(id))
+      .then(() => deletedUserFromServer())
       .then(action => dispatch(action))
       .catch(err => console.error(err));
   };
 };
-
 
 //reducer
 const reducer = (state = initialState, action) => {
@@ -73,8 +71,6 @@ const reducer = (state = initialState, action) => {
     case DELETED_USER_FROM_SERVER:
       return {
         ...state,
-        users: state.users.filter(user => user.id !== action.id),
-        topRanked: state.topRanked.filter((user => user.id !== action.id))
       };
     default:
       return state;
